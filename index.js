@@ -73,3 +73,8 @@ function TestSubject (path, defaultMocks) {
    */
   this.clearMocks = mock.stopAll;
 }
+
+module.exports = {
+  Mock,
+  TestSubject
+}
