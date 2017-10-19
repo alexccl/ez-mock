@@ -24,5 +24,8 @@
   "dependencies": {
     "clear-module": "^2.1.0",
     "mock-require": "^2.0.2"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0"
   }
 }
