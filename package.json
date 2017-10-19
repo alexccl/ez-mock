@@ -1,0 +1,24 @@
+{
+  "name": "ez-mock",
+  "version": "0.0.1",
+  "description": "Yet another mocking framework for Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexccl/ez-mock.git"
+  },
+  "keywords": [
+    "Node",
+    "Javascript",
+    "mock"
+  ],
+  "author": "Alex Luebbehusen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexccl/ez-mock/issues"
+  },
+  "homepage": "https://github.com/alexccl/ez-mock#readme"
+}
