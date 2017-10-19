@@ -5,6 +5,6 @@
  * @param {any} functionality - The bahavior to mock
  */
 function Mock (path, functionality) {
-  this.path = path;
+  this.path = require.resolve(path);
   this.functionality = functionality;
 }

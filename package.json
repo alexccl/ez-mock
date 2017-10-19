@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/alexccl/ez-mock/issues"
   },
-  "homepage": "https://github.com/alexccl/ez-mock#readme"
+  "homepage": "https://github.com/alexccl/ez-mock#readme",
+  "dependencies": {
+    "clear-module": "^2.1.0",
+    "mock-require": "^2.0.2"
+  }
 }
