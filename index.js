@@ -27,7 +27,7 @@ function TestSubject (path, defaultMocks) {
     }
 
     return [];
-  }
+  };
 
   const _defaultMocks = normalizeMockInput(defaultMocks);
 
@@ -44,7 +44,7 @@ function TestSubject (path, defaultMocks) {
       return searchMocks.filter(searchMock => {
         return mock.path === searchMock.path;
       });
-    }
+    };
 
     _defaultMocks.forEach(defaultMock => {
       const override = getMatchingMock(defaultMock, normalizedOverrides)[0];
@@ -54,7 +54,7 @@ function TestSubject (path, defaultMocks) {
     });
 
     const overridesWithoutDefault = normalizedOverrides.filter(override => {
-      return getMatchingMock(override, _defaultMocks).length === 0
+      return getMatchingMock(override, _defaultMocks).length === 0;
     });
 
     overridesWithoutDefault.forEach(overrideMock => {
