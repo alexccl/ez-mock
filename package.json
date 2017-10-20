@@ -4,6 +4,7 @@
   "description": "Yet another mocking framework for Node",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "test"
   },
   "repository": {
@@ -22,10 +23,17 @@
   },
   "homepage": "https://github.com/alexccl/ez-mock#readme",
   "dependencies": {
-    "clear-module": "^2.1.0",
     "mock-require": "^2.0.2"
   },
   "devDependencies": {
-    "ava": "^0.22.0"
+    "ava": "^0.22.0",
+    "eslint": "^4.9.0",
+    "eslint-config-semistandard": "^11.0.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }

@@ -1,4 +1,3 @@
-const clearModule = require('clear-module');
 var mock = require('mock-require');
 
 /**
@@ -40,7 +39,6 @@ function TestSubject (path, defaultMocks) {
    */
   this.generateSubject = (overrideMocks) => {
     const normalizedOverrides = normalizeMockInput(overrideMocks);
-    const reRequireMock = (mock) => { mock.reRequire(mock.path) };
 
     const getMatchingMock = (mock, searchMocks) => {
       return searchMocks.filter(searchMock => {
@@ -56,8 +54,8 @@ function TestSubject (path, defaultMocks) {
     });
 
     const overridesWithoutDefault = normalizedOverrides.filter(override => {
-        return getMatchingMock(override, _defaultMocks).length === 0
-      });
+      return getMatchingMock(override, _defaultMocks).length === 0
+    });
 
     overridesWithoutDefault.forEach(overrideMock => {
       mock(overrideMock.path, overrideMock.functionality);
@@ -66,7 +64,7 @@ function TestSubject (path, defaultMocks) {
 
     mock.reRequire(path);
     return require(path);
-  }
+  };
 
   /**
    * Clears all mocks from require cache
@@ -77,4 +75,4 @@ function TestSubject (path, defaultMocks) {
 module.exports = {
   Mock,
   TestSubject
-}
+};
