@@ -46,6 +46,7 @@ function TestSubject (path, defaultMocks) {
       });
     };
 
+    // apply default mocks and default overrides (if specified)
     _defaultMocks.forEach(defaultMock => {
       const override = getMatchingMock(defaultMock, normalizedOverrides)[0];
       const moduleFunctionality = Object.assign({}, defaultMock, override);
@@ -53,15 +54,18 @@ function TestSubject (path, defaultMocks) {
       mock.reRequire(_defaultMocks.path);
     });
 
+    // make sure to apply overrides even if there wasn't a default
     const overridesWithoutDefault = normalizedOverrides.filter(override => {
       return getMatchingMock(override, _defaultMocks).length === 0;
     });
 
+    // apply the override mocks that don't have defaults
     overridesWithoutDefault.forEach(overrideMock => {
       mock(overrideMock.path, overrideMock.functionality);
       mock.reRequire(overrideMock.path);
     });
 
+    // refresh test subject
     mock.reRequire(path);
     return require(path);
   };
