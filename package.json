@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "test"
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,11 @@
     "Javascript",
     "mock"
   ],
+  "ava": {
+    "files": [
+      "./test/*.js"
+    ]
+  },
   "author": "Alex Luebbehusen",
   "license": "MIT",
   "bugs": {

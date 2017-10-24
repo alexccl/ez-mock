@@ -1,13 +1,22 @@
-var mock = require('mock-require');
+const mock = require('mock-require');
+const path = require('path');
+
+const validateModulePath = (modulePath) => {
+  if (!modulePath) throw new Error('absolute is required for constructor');
+
+  if (!path.isAbsolute(modulePath)) throw new Error('module path must be absolute');
+};
 
 /**
  * Represents a mock module
  *
- * @param {string} path - The path (relative or absolute) to original module
+ * @param {string} modulePath - The absolute path to original module or module name
  * @param {any} functionality - The bahavior to mock
  */
-function Mock (path, functionality) {
-  this.path = require.resolve(path);
+function Mock (modulePath, functionality) {
+  validateModulePath(modulePath);
+
+  this.path = require.resolve(modulePath);
   this.functionality = functionality;
 }
 
@@ -18,12 +27,14 @@ function Mock (path, functionality) {
  * @param {string} path - the path to the test subject module
  * @param {Mock|[Mock]} defaultMocks - the default mock behavior
  */
-function TestSubject (path, defaultMocks) {
-  const normalizeMockInput = (input) => {
-    if (defaultMocks) {
-      if (Array.isArray(defaultMocks)) return defaultMocks;
+function TestSubject (modulePath, defaultMocks) {
+  validateModulePath(modulePath);
 
-      return [defaultMocks];
+  const normalizeMockInput = (input) => {
+    if (input) {
+      if (Array.isArray(input)) return input;
+
+      return [input];
     }
 
     return [];
@@ -46,12 +57,24 @@ function TestSubject (path, defaultMocks) {
       });
     };
 
+    const isObject = (item) => {
+      return (typeof item === 'object' && !Array.isArray(item) && item !== null);
+    };
+
+    const getOverride = (defaultMock, override) => {
+      if (isObject(defaultMock.functionality)) {
+        return Object.assign({}, defaultMock.functionality, override && override.functionality);
+      }
+
+      return override ? override.functionality : defaultMock.functionality;
+    };
+
     // apply default mocks and default overrides (if specified)
     _defaultMocks.forEach(defaultMock => {
       const override = getMatchingMock(defaultMock, normalizedOverrides)[0];
-      const moduleFunctionality = Object.assign({}, defaultMock, override);
-      mock(_defaultMocks.path, moduleFunctionality);
-      mock.reRequire(_defaultMocks.path);
+      const moduleFunctionality = getOverride(defaultMock, override);
+      mock(defaultMock.path, moduleFunctionality);
+      mock.reRequire(defaultMock.path);
     });
 
     // make sure to apply overrides even if there wasn't a default
@@ -66,8 +89,8 @@ function TestSubject (path, defaultMocks) {
     });
 
     // refresh test subject
-    mock.reRequire(path);
-    return require(path);
+    mock.reRequire(modulePath);
+    return require(modulePath);
   };
 
   /**
