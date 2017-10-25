@@ -51,6 +51,7 @@ function TestSubjectMocker (modulePath, defaultMocks) {
   this.generateSubject = (overrideMocks) => {
     const normalizedOverrides = normalizeMockInput(overrideMocks);
 
+    // search array of mocks to find mock with same path
     const getMatchingMock = (mock, searchMocks) => {
       return searchMocks.filter(searchMock => {
         return mock.path === searchMock.path;
@@ -61,6 +62,7 @@ function TestSubjectMocker (modulePath, defaultMocks) {
       return (typeof item === 'object' && !Array.isArray(item) && item !== null);
     };
 
+    // generates mock functionality given a default mock and overide mock
     const getOverride = (defaultMock, override) => {
       if (isObject(defaultMock.functionality)) {
         return Object.assign({}, defaultMock.functionality, override && override.functionality);
@@ -77,7 +79,7 @@ function TestSubjectMocker (modulePath, defaultMocks) {
       mock.reRequire(defaultMock.path);
     });
 
-    // make sure to apply overrides even if there wasn't a default
+    // get all the overrides that don't map to a default
     const overridesWithoutDefault = normalizedOverrides.filter(override => {
       return getMatchingMock(override, _defaultMocks).length === 0;
     });
