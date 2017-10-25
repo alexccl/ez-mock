@@ -21,13 +21,13 @@ function Mock (modulePath, functionality) {
 }
 
 /**
- * The subject under test.
+ * Generator of mocked test subjects.
  *
  * @constructor
  * @param {string} path - the path to the test subject module
  * @param {Mock|[Mock]} defaultMocks - the default mock behavior
  */
-function TestSubject (modulePath, defaultMocks) {
+function TestSubjectMocker (modulePath, defaultMocks) {
   validateModulePath(modulePath);
 
   const normalizeMockInput = (input) => {
@@ -101,5 +101,5 @@ function TestSubject (modulePath, defaultMocks) {
 
 module.exports = {
   Mock,
-  TestSubject
+  TestSubjectMocker
 };

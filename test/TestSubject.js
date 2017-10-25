@@ -1,5 +1,5 @@
 const test = require('ava');
-const { TestSubject, Mock } = require('../index');
+const { TestSubjectMocker, Mock } = require('../index');
 
 const testSubjectPath = require.resolve('./TestProj/subject');
 const dep1Path = require.resolve('./TestProj/dependency1');
@@ -18,7 +18,7 @@ const makeDepValAssertion = (testContext, testSubject, dep1Val, dep2Val) => {
 test('Module path required', t => {
   t.throws(
     () => {
-      TestSubject();
+      TestSubjectMocker();
     }
   );
 });
@@ -26,7 +26,7 @@ test('Module path required', t => {
 test('Relative path rejected', t => {
   t.throws(
     () => {
-      TestSubject('./relative/path.js');
+      TestSubjectMocker('./relative/path.js');
     }
   );
 });
@@ -34,27 +34,27 @@ test('Relative path rejected', t => {
 test('Module name rejected', t => {
   t.throws(
     () => {
-      TestSubject('fs');
+      TestSubjectMocker('fs');
     }
   );
 });
 
 test('No overrides preserves non-mocked behavior', t => {
-  const testSubject = new TestSubject(testSubjectPath);
-  makeDepValAssertion(t, testSubject.generateSubject(), 1, 2);
+  const testSubjectMocker = new TestSubjectMocker(testSubjectPath);
+  makeDepValAssertion(t, testSubjectMocker.generateSubject(), 1, 2);
 });
 
 test('Single mock default functionality', t => {
   const mock1 = new Mock(dep1Path, () => 3);
-  const testSubject = new TestSubject(testSubjectPath, mock1);
-  makeDepValAssertion(t, testSubject.generateSubject(), 3, 2);
+  const testSubjectMocker = new TestSubjectMocker(testSubjectPath, mock1);
+  makeDepValAssertion(t, testSubjectMocker.generateSubject(), 3, 2);
 });
 
 test('Mock array default functionality', t => {
   const mock1 = new Mock(dep1Path, () => 3);
   const mock2 = new Mock(dep2Path, () => 4);
-  const testSubject = new TestSubject(testSubjectPath, [mock1, mock2]);
-  makeDepValAssertion(t, testSubject.generateSubject(), 3, 4);
+  const testSubjectMocker = new TestSubjectMocker(testSubjectPath, [mock1, mock2]);
+  makeDepValAssertion(t, testSubjectMocker.generateSubject(), 3, 4);
 });
 
 test('Different data types', t => {
@@ -82,8 +82,8 @@ test('Different data types', t => {
     t.deepEqual(subject.valueDependency, val);
   };
 
-  const defaultMockSubject = (new TestSubject(testSubjectPath, mocks)).generateSubject();
-  const overrideMockSubject = (new TestSubject(testSubjectPath)).generateSubject(mocks);
+  const defaultMockSubject = (new TestSubjectMocker(testSubjectPath, mocks)).generateSubject();
+  const overrideMockSubject = (new TestSubjectMocker(testSubjectPath)).generateSubject(mocks);
 
   validate(defaultMockSubject);
   validate(overrideMockSubject);
@@ -92,15 +92,15 @@ test('Different data types', t => {
     return new Mock(mapping[0], mapping[2]);
   });
 
-  const overrideDefaultMockSubject = (new TestSubject(testSubjectPath, defaultMocks)).generateSubject(mocks);
+  const overrideDefaultMockSubject = (new TestSubjectMocker(testSubjectPath, defaultMocks)).generateSubject(mocks);
   validate(overrideDefaultMockSubject);
 });
 
 test('Clear mocks', t => {
   const mock1 = new Mock(dep1Path, () => 3);
   const mock2 = new Mock(dep2Path, () => 4);
-  const testSubject = new TestSubject(testSubjectPath);
-  makeDepValAssertion(t, testSubject.generateSubject([mock1, mock2]), 3, 4);
-  testSubject.clearMocks();
-  makeDepValAssertion(t, testSubject.generateSubject(), 1, 2);
+  const testSubjectMocker = new TestSubjectMocker(testSubjectPath);
+  makeDepValAssertion(t, testSubjectMocker.generateSubject([mock1, mock2]), 3, 4);
+  testSubjectMocker.clearMocks();
+  makeDepValAssertion(t, testSubjectMocker.generateSubject(), 1, 2);
 });
