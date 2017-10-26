@@ -1,10 +1,12 @@
 const mock = require('mock-require');
+const relative = require('require-relative');
+const callerId = require('caller-id');
 const path = require('path');
 
-const validateModulePath = (modulePath) => {
-  if (!modulePath) throw new Error('absolute is required for constructor');
-
-  if (!path.isAbsolute(modulePath)) throw new Error('module path must be absolute');
+// normalize relative path, abosolute path, or module name to absolute path
+const normalizePath = (inputModulePath, callerPath) => {
+  const callerDir = path.dirname(callerPath);
+  return relative.resolve(inputModulePath, callerDir);
 };
 
 /**
@@ -14,9 +16,7 @@ const validateModulePath = (modulePath) => {
  * @param {any} functionality - The bahavior to mock
  */
 function Mock (modulePath, functionality) {
-  validateModulePath(modulePath);
-
-  this.path = require.resolve(modulePath);
+  this.path = normalizePath(modulePath, callerId.getData().filePath);
   this.functionality = functionality;
 }
 
@@ -28,7 +28,7 @@ function Mock (modulePath, functionality) {
  * @param {Mock|[Mock]} defaultMocks - the default mock behavior
  */
 function TestSubjectMocker (modulePath, defaultMocks) {
-  validateModulePath(modulePath);
+  const absoluteModulePath = normalizePath(modulePath, callerId.getData().filePath);
 
   const normalizeMockInput = (input) => {
     if (input) {
@@ -91,8 +91,8 @@ function TestSubjectMocker (modulePath, defaultMocks) {
     });
 
     // refresh test subject
-    mock.reRequire(modulePath);
-    return require(modulePath);
+    mock.reRequire(absoluteModulePath);
+    return require(absoluteModulePath);
   };
 
   /**

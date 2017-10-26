@@ -9,18 +9,17 @@ test('Module path required', t => {
   );
 });
 
-test('Relative path rejected', t => {
-  t.throws(
-    () => {
-      Mock('./relative/path.js');
-    }
-  );
+test('Module name accepted as path', t => {
+  const mock = new Mock('fs');
+  t.truthy(mock.path = require.resolve('fs'));
 });
 
-test('Module name rejected', t => {
-  t.throws(
-    () => {
-      Mock('fs');
-    }
-  );
+test('Relative path accepted as path', t => {
+  const mock = new Mock('./TestProj/dependency1');
+  t.truthy(mock.path = require.resolve('./TestProj/dependency1.js'));
+});
+
+test('Absolute path accepted as path', t => {
+  const mock = new Mock(require.resolve('fs'));
+  t.truthy(mock.path = require.resolve('fs'));
 });

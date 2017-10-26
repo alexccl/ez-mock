@@ -28,7 +28,9 @@
   },
   "homepage": "https://github.com/alexccl/ez-mock#readme",
   "dependencies": {
-    "mock-require": "^2.0.2"
+    "caller-id": "^0.1.0",
+    "mock-require": "^2.0.2",
+    "require-relative": "^0.8.7"
   },
   "devDependencies": {
     "ava": "^0.22.0",
