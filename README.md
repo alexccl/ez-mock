@@ -87,3 +87,7 @@ __returns__ : `object/function`
 
 An instance of the test subject with the mocks applied
 
+### `TestSubject.clearMocks()`
+
+Clears all registered mocks (even the default mocks)
+
