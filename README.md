@@ -1,4 +1,5 @@
 # ez-mock
+![alt text](https://www.travis-ci.org/alexccl/ez-mock.svg?branch=master "Travis CI build status")
 
 #### Simple mocking of require modules.
 
