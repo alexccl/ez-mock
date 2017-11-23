@@ -34,7 +34,7 @@ But we don't want to touch any external systems for a unit test...  We can simpl
 
 ```javascript
 // test.js
-const {Mock, TestSubject} = require('ez-mock');
+const {Mock, TestSubjectMocker} = require('ez-mock');
 
 // database mock behavior that returns 1 from query
 const databaseMockReturn1 = new Mock('./database.js', () => 1);
@@ -43,15 +43,15 @@ const databaseMockReturn1 = new Mock('./database.js', () => 1);
 const databaseMockReturn2 = new Mock('./database.js', () => 2);
 
 // set the default database mock to return 1 from query
-const testSubject = new TestSubject('./addToDBValue.js', databaseMockReturn1);
+const testSubjectMocker = new TestSubjectMocker('./addToDBValue.js', databaseMockReturn1);
 
 // instantiate foo using the default database mock
-let addToDBValue = testSubject.generateSubject();
+let addToDBValue = testSubjectMocker.generateSubject();
 console.log(addToDBValue(1)); // 2
 console.log(addToDBValue(2)); // 3
 
 // instantiate foo with an override mock behavior
-addToDBValue = testSubject.generateSubject(databaseMockReturn2);
+addToDBValue = testSubjectMocker.generateSubject(databaseMockReturn2);
 console.log(addToDBValue(1)); // 3
 console.log(addToDBValue(2)); // 4
 ```
@@ -68,7 +68,7 @@ __functionality__ : `object/function`
 
 The functionality you wish to return when `require(...)` is called.
 
-### `TestSubject(modulePath, defaultMocks)`
+### `TestSubjectMocker(modulePath, defaultMocks)`
 
 __modulePath__: `String`
 
@@ -78,7 +78,7 @@ __defaultMocks__ : `Mock/[Mock]`
 
 The mock behavior that will always be applied when generating a test subject.
 
-### `TestSubject.generateTestSubject(overrideMocks)`
+### `TestSubjectMocker.generateTestSubject(overrideMocks)`
 
 __defaultMocks__ : `Mock/[Mock]`
 
@@ -88,7 +88,7 @@ __returns__ : `object/function`
 
 An instance of the test subject with the mocks applied
 
-### `TestSubject.clearMocks()`
+### `TestSubjectMocker.clearMocks()`
 
 Clears all registered mocks (even the default mocks)
 
