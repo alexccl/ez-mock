@@ -1,6 +1,6 @@
 {
   "name": "ez-mock",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Yet another mocking framework for Node",
   "main": "index.js",
   "scripts": {
